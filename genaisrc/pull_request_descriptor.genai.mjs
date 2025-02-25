@@ -10,19 +10,23 @@ script({
         "system.safety_validate_harmful_content",
     ],
 })
-const { safety } = env.vars
 
-const defaultBranch = await git.defaultBranch()
-const branch = await git.branch()
-if (branch === defaultBranch) cancel("you are already on the default branch")
+const { stdout: changes } = await host.exec("git", [
+    "diff",
+    "main",
+    "--",
+    ":!**/genaiscript.d.ts",
+    ":!**/jsconfig.json",
+    ":!genaisrc/*",
+    ":!.github/*",
+    ":!.vscode/*",
+    ":!*yarn.lock",
+])
 
-// compute diff
-const changes = await git.diff({
-    base: defaultBranch,
+def("GIT_DIFF", changes, {
+    language: "diff",
+    maxTokens: 20000,
 })
-console.log(changes)
-
-def("GIT_DIFF", changes, { maxTokens: 30000, detectPromptInjection: "available" })
 
 // task
 $`## Task
