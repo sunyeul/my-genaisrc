@@ -20,11 +20,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Ensure latest code from main (if needed)
-        run: git fetch origin && git pull origin main
+      - name: Ensure latest code from main
+        run: git fetch origin && git pull --rebase origin main
 
       - name: Run genaiscript pull request descriptor
         continue-on-error: true
-        run: npx --yes genaiscript run pull_request_descriptor -prd || echo "genaiscript failed"
+        run: npx --yes genaiscript run pull_request_descriptor -prd --out-trace $GITHUB_STEP_SUMMARY
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Archive genai results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+            name: genai-results
+            path: ./temp/genai/**
