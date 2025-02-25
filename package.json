@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "postinstall": "genaiscript scripts fix",
+        "postupdate": "genaiscript scripts fix",
+        "genaiscript": "genaiscript"
+    },
+    "devDependencies": {
+        "genaiscript": "^1.106.0"
+    }
+}
