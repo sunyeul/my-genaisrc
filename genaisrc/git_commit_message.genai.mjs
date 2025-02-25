@@ -145,6 +145,7 @@ do {
             // 푸시 옵션 제공
             const pushOptions = await host.select("변경사항을 푸시하시겠습니까?", [
                 { value: "push", description: "현재 브랜치로 푸시" },
+                { value: "push-upstream", description: "업스트림 설정하여 푸시 (새 브랜치)" },
                 { value: "no", description: "푸시하지 않음" },
             ])
             
@@ -154,6 +155,15 @@ do {
                     console.log("✅ 푸시 완료")
                 } catch (error) {
                     console.error("❌ 푸시 중 오류 발생:", error.message)
+                }
+            } else if (pushOptions === "push-upstream") {
+                try {
+                    // 현재 브랜치 이름 가져오기
+                    const branchName = (await git.exec(["branch", "--show-current"])).trim();
+                    console.log(await git.exec(["push", "--set-upstream", "origin", branchName]))
+                    console.log(`✅ 브랜치 '${branchName}'가 업스트림으로 설정되어 푸시 완료`)
+                } catch (error) {
+                    console.error("❌ 업스트림 푸시 중 오류 발생:", error.message)
                 }
             }
             break // 작업 완료 후 루프 종료
