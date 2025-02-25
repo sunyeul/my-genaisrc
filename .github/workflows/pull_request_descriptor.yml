@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Ensure latest code from main (if needed)
-        run: git fetch origin && git pull origin main
+        run: git fetch origin && git pull origin main:main
 
       - name: Run genaiscript pull request descriptor
         continue-on-error: true
