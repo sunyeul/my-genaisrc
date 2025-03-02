@@ -102,7 +102,6 @@ do {
     // 커밋 메시지 처리 로직 통합
     choice = await host.select(message, [
         { value: "commit", description: "메시지 수락 및 커밋" },
-        { value: "edit", description: "메시지 편집 후 커밋" },
         { value: "regenerate", description: "메시지 재생성" },
     ])
 
@@ -110,15 +109,8 @@ do {
         continue
     }
 
-    // 편집 옵션 처리
-    if (choice === "edit") {
-        message = await host.input("커밋 메시지 편집", {
-            required: true,
-        })
-    }
-
     // 커밋 및 푸시 처리 (edit과 commit 모두 이 로직으로 처리)
-    if ((choice === "commit" || choice === "edit") && message) {
+    if ((choice === "commit") && message) {
         try {
             // Git 명령에서 -m 옵션은 멀티라인 메시지를 지원함
             // 단, 명령줄에서 올바르게 이스케이프해야 함
