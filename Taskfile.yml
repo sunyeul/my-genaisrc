@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  default:
+      aliases:
+        - list
+      desc: List all tasks
+      cmd: task -l
+
+  git_commit_message:
+    desc: "generate git commit message"
+    cmd: npx genaiscript run git_commit_message
