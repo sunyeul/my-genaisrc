@@ -10,3 +10,7 @@ tasks:
   git_commit_message:
     desc: "generate git commit message"
     cmd: npx genaiscript run git_commit_message
+
+  branch_diff_descriptor:
+    desc: "generate branch diff descriptor"
+    cmd: npx genaiscript run branch_diff_descriptor
